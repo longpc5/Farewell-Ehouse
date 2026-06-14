@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import heroImg from './assets/hero.png'
 import { supabase } from "./services/supabase";
 import { Routes, Route } from 'react-router-dom';
-import Letter from './pages/Letter';
+import LetterPage from './pages/Letter';
+import LoginPage from './pages/Login';
 
 function App() {
   // useEffect(() => {
@@ -32,9 +33,9 @@ function App() {
 
   return (
     <Routes>
-      {/* <Route path="/" element={<LoginPage />} /> */}
+      <Route path="/" element={<LoginPage />} />
       {/* <Route path="/intro" element={<IntroductionPage />} /> */}
-      <Route path="/letter" element={<Letter />} />
+      <Route path="/letter" element={<LetterPage/>} />
       {/* <Route path="/farewell" element={<FarewellPage />} /> */}
       {/* <Route path="/guestbook" element={<GuestbookPage />} /> */}
     </Routes>
