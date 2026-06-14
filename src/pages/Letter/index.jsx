@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../services/supabase";
+import { getCurrentUser } from "../../utils/auth";
 
 function LetterPage() {
-    const user = JSON.parse(
-        localStorage.getItem("currentUser")
-    );
+    const user = getCurrentUser();
     const [letter, setLetter] = useState(null);
     useEffect(() => {
         const loadLetter = async () => {
