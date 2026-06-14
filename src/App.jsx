@@ -4,6 +4,9 @@ import { supabase } from "./services/supabase";
 import { Routes, Route } from 'react-router-dom';
 import LetterPage from './pages/Letter';
 import LoginPage from './pages/Login';
+import FarewellPage from './pages/Farewell';
+import IntroPage from './pages/Intro';
+import GuestbookPage from './pages/Guestbook';
 
 function App() {
   // useEffect(() => {
@@ -34,10 +37,10 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
-      {/* <Route path="/intro" element={<IntroductionPage />} /> */}
-      <Route path="/letter" element={<LetterPage/>} />
-      {/* <Route path="/farewell" element={<FarewellPage />} /> */}
-      {/* <Route path="/guestbook" element={<GuestbookPage />} /> */}
+      <Route path="/intro" element={<IntroPage />} />
+      <Route path="/letter" element={<LetterPage />} />
+      <Route path="/farewell" element={<FarewellPage />} />
+      <Route path="/guestbook" element={<GuestbookPage />} />
     </Routes>
   )
 }
