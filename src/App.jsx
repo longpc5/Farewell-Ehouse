@@ -7,6 +7,7 @@ import LoginPage from './pages/Login';
 import FarewellPage from './pages/Farewell';
 import IntroPage from './pages/Intro';
 import GuestbookPage from './pages/Guestbook';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   // useEffect(() => {
@@ -37,10 +38,18 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
-      <Route path="/intro" element={<IntroPage />} />
-      <Route path="/letter" element={<LetterPage />} />
-      <Route path="/farewell" element={<FarewellPage />} />
-      <Route path="/guestbook" element={<GuestbookPage />} />
+      <Route path="/intro" element={
+        <ProtectedRoute><IntroPage /></ProtectedRoute>
+      } />
+      <Route path="/letter" element={
+        <ProtectedRoute><LetterPage /></ProtectedRoute>
+      } />
+      <Route path="/farewell" element={
+        <ProtectedRoute><FarewellPage /></ProtectedRoute>
+      } />
+      <Route path="/guestbook" element={
+        <ProtectedRoute><GuestbookPage /></ProtectedRoute>
+      } />
     </Routes>
   )
 }

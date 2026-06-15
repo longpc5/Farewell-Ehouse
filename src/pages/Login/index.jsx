@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
+import { clearCurrentUser } from "../../utils/auth";
+
 
 function LoginPage() {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-
+    
+    useEffect(() => {clearCurrentUser()}, []);
 
     const handleLogin = async () => {
         const { data, error } = await supabase

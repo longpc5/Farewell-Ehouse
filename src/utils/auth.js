@@ -3,3 +3,7 @@ export const getCurrentUser = () => {
         localStorage.getItem("currentUser")
     );
 };
+
+export const clearCurrentUser = () => {
+    localStorage.removeItem("currentUser");
+};
