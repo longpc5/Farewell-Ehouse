@@ -3,11 +3,9 @@ import { getCurrentUser } from "../utils/auth";
 
 function ProtectedRoute({ children }) {
     const user = getCurrentUser();
-
     if (!user) {
         return <Navigate to="/" replace />;
     }
-
     return children;
 }
 
