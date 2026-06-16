@@ -26,9 +26,14 @@ function MusicPlayer() {
         <div
             className="
                 fixed
-                bottom-6
-                right-6
-                w-72
+                bottom-3
+                left-3
+                right-3
+                z-50
+                sm:bottom-6
+                sm:left-auto
+                sm:right-6
+                sm:w-72
 
                 bg-white/10
                 backdrop-blur-lg
@@ -39,21 +44,23 @@ function MusicPlayer() {
                 rounded-2xl
                 shadow-xl
 
-                px-5
-                py-4
+                px-4
+                py-3
+                sm:px-5
+                sm:py-4
 
                 text-white
             "
         >
-            <div className="flex items-center gap-2 mb-3">
-                <IoMusicalNotes />
+            <div className="mb-3 flex items-center gap-2 sm:mb-3">
+                <IoMusicalNotes className="shrink-0" />
 
-                <span className="text-sm text-gray-300">
+                <span className="text-xs text-gray-300 sm:text-sm">
                     Soundtrack
                 </span>
             </div>
 
-            <h3 className="font-medium truncate">
+            <h3 className="truncate text-sm font-medium sm:text-base">
                 {currentTrack.title}
             </h3>
 
@@ -62,8 +69,10 @@ function MusicPlayer() {
                     flex
                     items-center
                     justify-center
-                    gap-4
-                    mt-4
+                    gap-5
+                    mt-3
+                    sm:gap-4
+                    sm:mt-4
                 "
             >
                 <button
@@ -83,8 +92,10 @@ function MusicPlayer() {
                             : play
                     }
                     className="
-                        w-12
-                        h-12
+                        w-11
+                        h-11
+                        sm:w-12
+                        sm:h-12
 
                         rounded-full
 

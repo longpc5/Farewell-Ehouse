@@ -4,6 +4,7 @@ import LoginPage from './pages/Login';
 import FarewellPage from './pages/Farewell';
 import IntroPage from './pages/Intro';
 import GuestbookPage from './pages/Guestbook';
+import EndingPage from './pages/End';
 import ProtectedRoute from './components/ProtectedRoute';
 import MusicPlayer from './components/MusicPlayer';
 
@@ -26,6 +27,9 @@ function App() {
         } />
         <Route path="/guestbook" element={
           <ProtectedRoute><GuestbookPage /></ProtectedRoute>
+        } />
+        <Route path="/end" element={
+          <ProtectedRoute><EndingPage /></ProtectedRoute>
         } />
       </Routes>
       {showPlayer && <MusicPlayer />}

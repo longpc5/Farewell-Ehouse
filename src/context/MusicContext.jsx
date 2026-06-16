@@ -64,7 +64,11 @@ export function MusicProvider({ children }) {
             localStorage.getItem("musicStarted");
 
         if (shouldPlay === "true") {
-            play();
+            const timer = window.setTimeout(() => {
+                play();
+            }, 0);
+
+            return () => window.clearTimeout(timer);
         }
     }, []);
 
@@ -81,4 +85,5 @@ export function MusicProvider({ children }) {
     );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useMusic = () => useContext(MusicContext);
