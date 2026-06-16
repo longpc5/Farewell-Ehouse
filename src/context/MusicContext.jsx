@@ -4,7 +4,8 @@ const MusicContext = createContext(null);
 
 const playlist = [
     { title: "Night Changes", src: "/music/night-changes-live-acoustic-session.mp3" },
-    { title: "Photograph", src: "/music/photograph.mp3" }
+    { title: "Photograph", src: "/music/photograph.mp3" },
+    { title: "Someday We'll Know (Album Version)", src: "/music/someday-we-ll-know-album-version.mp3"}
 ];
 
 export function MusicProvider({ children }) {

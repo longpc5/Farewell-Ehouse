@@ -91,7 +91,7 @@ function LetterPage() {
                 </p>
 
                 <div className="relative overflow-hidden rounded-lg border border-white/10 bg-[#151515] px-4 py-6 text-left shadow-2xl shadow-black/40 sm:px-6 sm:py-8 md:px-12 md:py-12">
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                    <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent" />
 
                     <div className="mb-6 flex flex-col gap-2 border-b border-white/10 pb-5 sm:mb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
                         <div>
@@ -108,12 +108,12 @@ function LetterPage() {
                             {errorMessage}
                         </p>
                     ) : (
-                        <div className="min-h-[16rem] space-y-4 text-base leading-8 text-gray-200 sm:min-h-[18rem] sm:space-y-5 md:text-xl md:leading-9">
+                        <div className="min-h-64 space-y-4 text-base leading-8 text-gray-200 sm:min-h-72 sm:space-y-5 md:text-xl md:leading-9">
                             {paragraphs.map((paragraph, index) => (
                                 <p key={index}>{paragraph}</p>
                             ))}
                             {!isTypingDone && (
-                                <span className="inline-flex h-6 w-[2px] translate-y-1 animate-pulse bg-white" />
+                                <span className="inline-flex h-6 w-0.5 translate-y-1 animate-pulse bg-white" />
                             )}
                         </div>
                     )}

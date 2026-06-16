@@ -69,14 +69,14 @@ function LoginPage() {
                 </div>
 
                 <div className="relative">
-                    <div className="absolute -inset-8 rounded-full bg-white/[0.03] blur-3xl" />
+                    <div className="absolute -inset-8 rounded-full bg-white/3 blur-3xl" />
 
                     <form
                         onSubmit={(event) => {
                             event.preventDefault();
                             handleLogin();
                         }}
-                        className="relative rounded-lg border border-white/10 bg-white/[0.06] p-5 text-left shadow-2xl shadow-black/40 backdrop-blur-md sm:p-6 md:p-8"
+                        className="relative rounded-lg border border-white/10 bg-white/6 p-5 text-left shadow-2xl shadow-black/40 backdrop-blur-md sm:p-6 md:p-8"
                     >
                         <div className="mb-7 flex items-center gap-3 sm:mb-8">
                             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white text-black sm:h-12 sm:w-12">

@@ -53,7 +53,7 @@ function GuestbookPage() {
                     Page 4 - Viết lại cho tôi
                 </p>
 
-                <div className="grid gap-7 rounded-lg border border-white/10 bg-white/[0.04] p-5 text-left shadow-2xl shadow-black/30 sm:gap-8 sm:p-6 md:p-10 lg:grid-cols-[0.85fr_1.15fr]">
+                <div className="grid gap-7 rounded-lg border border-white/10 bg-white/4 p-5 text-left shadow-2xl shadow-black/30 sm:gap-8 sm:p-6 md:p-10 lg:grid-cols-[0.85fr_1.15fr]">
                     <div>
                         <h1 className="mb-5 text-[2.35rem] font-light leading-[1.1] text-white sm:text-4xl md:text-5xl">
                             Một lời nhắn chỉ mình tôi đọc.

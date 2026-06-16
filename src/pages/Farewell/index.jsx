@@ -61,7 +61,7 @@ function FarewellPage() {
                         {wishes.map((wish, index) => (
                             <article
                                 key={wish.title}
-                                className="rounded-lg border border-white/10 bg-white/[0.04] p-5 text-left shadow-xl shadow-black/20 sm:p-6"
+                                className="rounded-lg border border-white/10 bg-white/4 p-5 text-left shadow-xl shadow-black/20 sm:p-6"
                             >
                                 <p className="mb-4 text-sm text-gray-500">
                                     0{index + 1}
