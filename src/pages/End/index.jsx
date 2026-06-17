@@ -8,6 +8,7 @@ function EndingPage() {
     const canvasRef = useRef(null);
     const animFrameRef = useRef(null);
     const starsRef = useRef([]);
+    const backgroundStarsRef = useRef([]);
     const [users, setUsers] = useState([]);
     const [hoveredUser, setHoveredUser] = useState(null);
     const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
@@ -47,8 +48,26 @@ function EndingPage() {
             const size = 1.5 + Math.random() * 2;
             const twinkleOffset = Math.random() * Math.PI * 2;
             const twinkleSpeed = 0.4 + Math.random() * 0.8;
-            return { user, x, y, size, twinkleOffset, twinkleSpeed };
+            const isCurrentUser = user.id === currentUser?.id;
+            return {
+                user,
+                x,
+                y,
+                size,
+                twinkleOffset,
+                twinkleSpeed,
+                isCurrentUser,
+                hoverIntensity: 0,
+            };
         });
+
+        backgroundStarsRef.current = Array.from({ length: 20 }, () => ({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            size: 0.8 + Math.random() * 1.8,
+            twinkleOffset: Math.random() * Math.PI * 2,
+            twinkleSpeed: 0.2 + Math.random() * 0.5,
+        }));
     }, [users]);
 
     // Draw loop
@@ -76,15 +95,96 @@ function EndingPage() {
             ctx.clearRect(0, 0, W, H);
 
             // Vẽ background stars nhỏ (trang trí)
-            ctx.fillStyle = "rgba(255,255,255,0.12)";
-            for (let i = 0; i < 80; i++) {
-                // dùng seed cố định để không nhảy lung tung
-                const bx = ((i * 137.5) % 1) * W;
-                const by = ((i * 97.3) % 1) * H;
+            backgroundStarsRef.current.forEach((star) => {
+                const twinkle =
+                    0.5 +
+                    0.5 * Math.sin(t * star.twinkleSpeed + star.twinkleOffset);
+
+                const alpha = 0.10 + twinkle * 0.12;
+
+                const radius = star.size * (0.9 + twinkle * 0.25);
+
+                const glow = ctx.createRadialGradient(
+                    star.x,
+                    star.y,
+                    0,
+                    star.x,
+                    star.y,
+                    radius * 6
+                );
+
+                glow.addColorStop(0, `rgba(255,255,255,${alpha})`);
+                glow.addColorStop(1, "rgba(255,255,255,0)");
+
                 ctx.beginPath();
-                ctx.arc(bx, by, 0.6, 0, Math.PI * 2);
+                ctx.arc(star.x, star.y, radius * 6, 0, Math.PI * 2);
+                ctx.fillStyle = glow;
                 ctx.fill();
-            }
+
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,255,255,${alpha + 0.08})`;
+                ctx.fill();
+            });
+
+            ctx.lineWidth = 1;
+
+            const connections = new Set();
+
+            starsRef.current.forEach((star, index) => {
+                const nearest = starsRef.current
+                    .map((other, otherIndex) => {
+                        if (index === otherIndex) return null;
+
+                        const dx = star.x - other.x;
+                        const dy = star.y - other.y;
+
+                        return {
+                            index: otherIndex,
+                            dist: Math.sqrt(dx * dx + dy * dy),
+                        };
+                    })
+                    .filter(Boolean)
+                    .sort((a, b) => a.dist - b.dist)
+                    .slice(0, 2);
+
+                nearest.forEach(({ index: otherIndex }) => {
+                    const key = [index, otherIndex].sort((a, b) => a - b).join('-');
+                    connections.add(key);
+                });
+            });
+
+            connections.forEach((key) => {
+                const [i, j] = key.split('-').map(Number);
+
+                const a = starsRef.current[i];
+                const b = starsRef.current[j];
+
+                const hoveredId = hoveredUser?.id;
+
+                const isConnectedToHovered =
+                    hoveredId &&
+                    (a.user.id === hoveredId || b.user.id === hoveredId);
+
+                ctx.strokeStyle = isConnectedToHovered
+                    ? 'rgba(255,255,255,0.75)'
+                    : 'rgba(255,255,255,0.30)';
+
+                ctx.lineWidth = isConnectedToHovered ? 3.2 : 2;
+
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+
+                if (isConnectedToHovered) {
+                    ctx.beginPath();
+                    ctx.arc(a.x, a.y, 2.2, 0, Math.PI * 2);
+                    ctx.arc(b.x, b.y, 2.2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,255,255,0.65)';
+                    ctx.fill();
+                }
+            });
 
             // Vẽ từng ngôi sao user
             starsRef.current.forEach((star) => {
@@ -94,15 +194,38 @@ function EndingPage() {
                         Math.sin(
                             t * star.twinkleSpeed + star.twinkleOffset
                         );
-                const alpha = 0.5 + twinkle * 0.5;
-                const r = star.size * (0.85 + twinkle * 0.2);
+
+                const isHovered = hoveredUser?.id === star.user.id;
+
+                const targetHover = isHovered ? 1 : 0;
+                star.hoverIntensity +=
+                    (targetHover - star.hoverIntensity) * 0.08;
+
+                const alpha =
+                    (star.isCurrentUser
+                        ? 0.72 + twinkle * 0.18
+                        : 0.5 + twinkle * 0.5) +
+                    star.hoverIntensity * 0.25;
+
+                const baseRadius = star.isCurrentUser
+                    ? star.size * (1.35 + twinkle * 0.25)
+                    : star.size * (0.85 + twinkle * 0.2);
+
+                const r = baseRadius * (1 + star.hoverIntensity * 0.45);
 
                 // Glow
                 const grd = ctx.createRadialGradient(
                     star.x, star.y, 0,
                     star.x, star.y, r * 5
                 );
-                grd.addColorStop(0, `rgba(255,255,255,${alpha * 0.6})`);
+                grd.addColorStop(
+                    0,
+                    isHovered
+                        ? `rgba(255,255,255,${alpha * (0.8 + star.hoverIntensity * 0.4)})`
+                        : star.isCurrentUser
+                            ? `rgba(255,235,180,${alpha * 0.7})`
+                            : `rgba(255,255,255,${alpha * 0.6})`
+                );
                 grd.addColorStop(1, "rgba(255,255,255,0)");
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, r * 5, 0, Math.PI * 2);
@@ -112,12 +235,18 @@ function EndingPage() {
                 // Core
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                ctx.fillStyle = isHovered
+                    ? `rgba(255,255,255,${alpha * (0.9 + star.hoverIntensity * 0.2)})`
+                    : star.isCurrentUser
+                        ? `rgba(255,245,220,${alpha})`
+                        : `rgba(255,255,255,${alpha})`;
                 ctx.fill();
 
                 // Tên user — hiện mờ dưới ngôi sao
                 ctx.font = "11px system-ui, sans-serif";
-                ctx.fillStyle = `rgba(156,163,175,${alpha * 0.7})`;
+                ctx.fillStyle = isHovered
+                    ? `rgba(229,231,235,${Math.min(alpha, 1)})`
+                    : `rgba(156,163,175,${alpha * 0.7})`;
                 ctx.textAlign = "center";
                 ctx.fillText(
                     star.user.display_name || "—",
@@ -147,7 +276,7 @@ function EndingPage() {
         const mx = e.clientX - rect.left;
         const my = e.clientY - rect.top;
 
-        const HIT_RADIUS = 18;
+        const HIT_RADIUS = 35;
         const found = starsRef.current.find((star) => {
             const dx = star.x - mx;
             const dy = star.y - my;
@@ -157,6 +286,7 @@ function EndingPage() {
         if (found) {
             setHoveredUser(found.user);
             setTooltipPos({ x: e.clientX, y: e.clientY });
+            // console.log(found.user.display_name);
         } else {
             setHoveredUser(null);
         }
@@ -171,14 +301,16 @@ function EndingPage() {
     };
 
     return (
-        <main className="relative min-h-screen overflow-hidden bg-[#080810] text-white">
+        <main
+            className="relative min-h-screen overflow-hidden bg-[#080810] text-white"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleLeave}
+        >
             {/* Canvas constellation */}
             <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full"
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleLeave}
-                style={{ cursor: hoveredUser ? "default" : "default" }}
+                style={{ cursor: hoveredUser ? "pointer" : "default" }}
             />
 
             {/* Tooltip */}
@@ -190,7 +322,7 @@ function EndingPage() {
                         top: tooltipPos.y - 16,
                     }}
                 >
-                    {hoveredUser.display_name}
+                    <>✨ {hoveredUser.display_name}</>
                 </div>
             )}
 
@@ -204,8 +336,8 @@ function EndingPage() {
                     Cảm ơn vì đã là một phần của nơi này.
                 </h1>
 
-                <p className="mb-2 max-w-sm text-center text-sm leading-7 text-gray-500">
-                    Mỗi ngôi sao là một người đã ghé qua.
+                <p className="mb-2 max-w-md text-center text-sm leading-7 text-gray-500">
+                    Có những người đến rồi đi, nhưng tất cả đều để lại một ánh sáng nhỏ.
                 </p>
 
                 {currentUser && (
