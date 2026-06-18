@@ -7,6 +7,7 @@ import GuestbookPage from './pages/Guestbook';
 import EndingPage from './pages/End';
 import ProtectedRoute from './components/ProtectedRoute';
 import MusicPlayer from './components/MusicPlayer';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function App() {
         } />
       </Routes>
       {showPlayer && <MusicPlayer />}
+      <Analytics />
     </>
   )
 }
