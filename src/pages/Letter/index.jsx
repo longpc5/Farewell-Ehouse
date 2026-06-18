@@ -79,7 +79,7 @@ function LetterPage() {
     if (isLoading) {
         return (
             <BookLayout centered>
-                <p className="text-[var(--ink-faint)]">Đang mở lá thư của bạn...</p>
+                <p className="text-(--ink-faint)">Đang mở lá thư của bạn...</p>
             </BookLayout>
         );
     }
@@ -87,24 +87,34 @@ function LetterPage() {
     return (
         <BookLayout chapter="Lá thư">
             <article className="card-paper px-5 py-7 sm:px-8 sm:py-10">
-                <header className="mb-8 border-b border-[var(--border-soft)] pb-6 sm:mb-10 sm:pb-8">
-                    <p className="mb-2 text-sm text-[var(--ink-faint)]">Gửi</p>
+                <header className="mb-8 border-b border-(--border-soft) pb-6 sm:mb-10 sm:pb-8">
+                    <p className="mb-2 text-sm text-(--ink-faint)">Gửi</p>
                     <h1 className="display-title text-3xl sm:text-4xl">
                         {user?.display_name || user?.name || "bạn"}
                     </h1>
-                    <p className="mt-3 text-sm text-[var(--ink-faint)]">
+                    <p className="mt-3 text-sm text-(--ink-faint)">
                         Một lá thư nhỏ, viết riêng cho bạn.
                     </p>
                 </header>
 
                 {errorMessage ? (
-                    <p className="text-lg leading-8 text-[var(--ink)]">{errorMessage}</p>
+                    <p className="text-lg leading-8 text-(--ink)">{errorMessage}</p>
                 ) : (
-                    <div className="min-h-64 space-y-5 text-[1.05rem] leading-[1.85] text-[var(--ink)] sm:min-h-72">
-                        {paragraphs.map((paragraph, index) => (
-                            <p key={index}>{paragraph}</p>
-                        ))}
-                        {!isTypingDone && <span className="typing-cursor" />}
+                    <div className="min-h-64 space-y-5 text-[1.05rem] leading-[1.85] text-(--ink) sm:min-h-72">
+                        {paragraphs.length > 0 ? (
+                            <>
+                                {paragraphs.slice(0, -1).map((paragraph, index) => (
+                                    <p key={index}>{paragraph}</p>
+                                ))}
+
+                                <p>
+                                    {paragraphs[paragraphs.length - 1]}
+                                    {!isTypingDone && <span className="typing-cursor" />}
+                                </p>
+                            </>
+                        ) : (
+                            !isTypingDone && <span className="typing-cursor" />
+                        )}
                     </div>
                 )}
 

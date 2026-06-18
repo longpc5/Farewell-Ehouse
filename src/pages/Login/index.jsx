@@ -50,7 +50,7 @@ function LoginPage() {
         <main className="page-shell">
             <section className="page-inner page-inner--wide mx-auto grid min-h-[calc(100svh-8rem)] items-center gap-12 lg:grid-cols-[1.1fr_0.85fr]">
                 <div>
-                    <p className="mb-6 font-display text-[var(--ink-faint)]">
+                    <p className="mb-6 font-display text-(--ink-faint)">
                         Ehouse · sổ chia tay
                     </p>
 
@@ -77,7 +77,7 @@ function LoginPage() {
                         </div>
                         <div>
                             <h2 className="text-xl sm:text-2xl">Mở trang của bạn</h2>
-                            <p className="mt-1 text-sm text-[var(--ink-faint)]">
+                            <p className="mt-1 text-sm text-(--ink-faint)">
                                 Đăng nhập bằng tài khoản đã được gửi riêng.
                             </p>
                         </div>

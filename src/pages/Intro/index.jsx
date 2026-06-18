@@ -19,7 +19,7 @@ function IntroPage() {
         <BookLayout chapter="Mở đầu" centered>
             <h1 className="display-title mb-6 max-w-xl">
                 Cảm ơn bạn đã ở đây,{" "}
-                <em className="not-italic text-[var(--accent)]">
+                <em className="not-italic text-(--accent)">
                     {user?.display_name || "bạn ơi"}
                 </em>
                 .

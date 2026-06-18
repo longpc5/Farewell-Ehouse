@@ -302,7 +302,7 @@ function EndingPage() {
 
     return (
         <main
-            className="relative min-h-screen overflow-hidden bg-[var(--bg)] text-[var(--ink)]"
+            className="relative min-h-screen overflow-hidden bg-(--bg) text-(--ink)"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleLeave}
         >
@@ -316,7 +316,7 @@ function EndingPage() {
             {/* Tooltip */}
             {hoveredUser && (
                 <div
-                    className="pointer-events-none fixed z-50 whitespace-nowrap border border-[var(--border)] bg-[var(--bg-raised)] px-3 py-1.5 text-sm text-[var(--ink)]"
+                    className="pointer-events-none fixed z-50 whitespace-nowrap border border-(--border) bg-(--bg-raised) px-3 py-1.5 text-sm text-(--ink)"
                     style={{
                         left: tooltipPos.x + 14,
                         top: tooltipPos.y - 16,
@@ -328,7 +328,7 @@ function EndingPage() {
 
             {/* Nội dung chính — overlay lên canvas */}
             <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5 pb-36 pt-10 text-center sm:pb-40">
-                <p className="mb-6 font-display text-[var(--ink-faint)]">
+                <p className="mb-6 font-display text-(--ink-faint)">
                     Ehouse · 2025
                 </p>
 
@@ -341,9 +341,9 @@ function EndingPage() {
                 </p>
 
                 {currentUser && (
-                    <p className="mb-12 text-sm text-[var(--ink-faint)]">
+                    <p className="mb-12 text-sm text-(--ink-faint)">
                         Trong đó có{" "}
-                        <span className="text-[var(--accent)]">
+                        <span className="text-(--accent)">
                             {currentUser.display_name}
                         </span>
                         .

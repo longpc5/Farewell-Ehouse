@@ -59,7 +59,7 @@ function FarewellPage() {
                 <div className="space-y-5">
                     {wishes.map((wish, index) => (
                         <article key={wish.title} className="card px-5 py-5 sm:px-6 sm:py-6">
-                            <p className="mb-3 font-display text-sm text-[var(--accent)]">
+                            <p className="mb-3 font-display text-sm text-(--accent)">
                                 {String(index + 1).padStart(2, "0")}
                             </p>
                             <h2 className="mb-3 text-2xl leading-snug">{wish.title}</h2>
