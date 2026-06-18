@@ -167,8 +167,8 @@ function EndingPage() {
                     (a.user.id === hoveredId || b.user.id === hoveredId);
 
                 ctx.strokeStyle = isConnectedToHovered
-                    ? 'rgba(255,255,255,0.75)'
-                    : 'rgba(255,255,255,0.30)';
+                    ? 'rgba(201,169,110,0.7)'
+                    : 'rgba(154,146,134,0.22)';
 
                 ctx.lineWidth = isConnectedToHovered ? 3.2 : 2;
 
@@ -221,10 +221,10 @@ function EndingPage() {
                 grd.addColorStop(
                     0,
                     isHovered
-                        ? `rgba(255,255,255,${alpha * (0.8 + star.hoverIntensity * 0.4)})`
+                        ? `rgba(232,226,214,${alpha * (0.8 + star.hoverIntensity * 0.4)})`
                         : star.isCurrentUser
-                            ? `rgba(255,235,180,${alpha * 0.7})`
-                            : `rgba(255,255,255,${alpha * 0.6})`
+                            ? `rgba(201,169,110,${alpha * 0.75})`
+                            : `rgba(232,226,214,${alpha * 0.5})`
                 );
                 grd.addColorStop(1, "rgba(255,255,255,0)");
                 ctx.beginPath();
@@ -236,17 +236,17 @@ function EndingPage() {
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, r, 0, Math.PI * 2);
                 ctx.fillStyle = isHovered
-                    ? `rgba(255,255,255,${alpha * (0.9 + star.hoverIntensity * 0.2)})`
+                    ? `rgba(232,226,214,${alpha * (0.9 + star.hoverIntensity * 0.2)})`
                     : star.isCurrentUser
-                        ? `rgba(255,245,220,${alpha})`
-                        : `rgba(255,255,255,${alpha})`;
+                        ? `rgba(212,185,122,${alpha})`
+                        : `rgba(232,226,214,${alpha * 0.85})`;
                 ctx.fill();
 
                 // Tên user — hiện mờ dưới ngôi sao
-                ctx.font = "11px system-ui, sans-serif";
+                ctx.font = '13px "Cormorant Garamond", Georgia, serif';
                 ctx.fillStyle = isHovered
-                    ? `rgba(229,231,235,${Math.min(alpha, 1)})`
-                    : `rgba(156,163,175,${alpha * 0.7})`;
+                    ? `rgba(232,226,214,${Math.min(alpha, 1)})`
+                    : `rgba(154,146,134,${alpha * 0.7})`;
                 ctx.textAlign = "center";
                 ctx.fillText(
                     star.user.display_name || "—",
@@ -302,7 +302,7 @@ function EndingPage() {
 
     return (
         <main
-            className="relative min-h-screen overflow-hidden bg-[#080810] text-white"
+            className="relative min-h-screen overflow-hidden bg-[var(--bg)] text-[var(--ink)]"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleLeave}
         >
@@ -316,44 +316,41 @@ function EndingPage() {
             {/* Tooltip */}
             {hoveredUser && (
                 <div
-                    className="fixed z-50 pointer-events-none px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm text-white whitespace-nowrap"
+                    className="pointer-events-none fixed z-50 whitespace-nowrap border border-[var(--border)] bg-[var(--bg-raised)] px-3 py-1.5 text-sm text-[var(--ink)]"
                     style={{
                         left: tooltipPos.x + 14,
                         top: tooltipPos.y - 16,
                     }}
                 >
-                    <>✨ {hoveredUser.display_name}</>
+                    {hoveredUser.display_name}
                 </div>
             )}
 
             {/* Nội dung chính — overlay lên canvas */}
-            <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5 pb-36 pt-10 sm:pb-40">
-                <p className="mb-5 text-xs uppercase tracking-[0.26em] text-gray-500 sm:text-sm">
+            <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-5 pb-36 pt-10 text-center sm:pb-40">
+                <p className="mb-6 font-display text-[var(--ink-faint)]">
                     Ehouse · 2025
                 </p>
 
-                <h1 className="mb-6 max-w-xl text-center text-3xl font-light leading-snug text-white sm:text-4xl md:text-5xl">
+                <h1 className="display-title mb-6 max-w-xl">
                     Cảm ơn vì đã là một phần của nơi này.
                 </h1>
 
-                <p className="mb-2 max-w-md text-center text-sm leading-7 text-gray-500">
+                <p className="lead mb-2 max-w-md">
                     Có những người đến rồi đi, nhưng tất cả đều để lại một ánh sáng nhỏ.
                 </p>
 
                 {currentUser && (
-                    <p className="mb-12 text-center text-sm text-gray-600">
+                    <p className="mb-12 text-sm text-[var(--ink-faint)]">
                         Trong đó có{" "}
-                        <span className="text-gray-400">
+                        <span className="text-[var(--accent)]">
                             {currentUser.display_name}
                         </span>
                         .
                     </p>
                 )}
 
-                <button
-                    onClick={handleClose}
-                    className="rounded-full border border-white/20 px-7 py-3 text-sm text-gray-400 transition hover:border-white/40 hover:text-white"
-                >
+                <button onClick={handleClose} className="btn btn-secondary">
                     Đóng sổ
                 </button>
             </div>

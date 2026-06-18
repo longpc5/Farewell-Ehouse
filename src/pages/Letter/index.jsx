@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
 import { getCurrentUser } from "../../utils/auth";
+import BookLayout from "../../components/BookLayout";
 
 const TYPEWRITER_SPEED = 24;
 
@@ -77,69 +78,54 @@ function LetterPage() {
 
     if (isLoading) {
         return (
-            <main className="flex min-h-screen items-center justify-center bg-[#0f0f0f] px-6 pb-36 text-white">
-                <p className="text-gray-400">Đang mở lá thư của bạn...</p>
-            </main>
+            <BookLayout centered>
+                <p className="text-[var(--ink-faint)]">Đang mở lá thư của bạn...</p>
+            </BookLayout>
         );
     }
 
     return (
-        <main className="min-h-screen bg-[#0f0f0f] px-4 pb-36 pt-6 text-white sm:px-5 sm:pt-10 md:px-10 md:pb-40">
-            <section className="mx-auto flex min-h-[calc(100vh-10rem)] w-full max-w-4xl flex-col justify-center sm:min-h-[calc(100vh-12rem)]">
-                <p className="mb-4 text-left text-xs uppercase tracking-[0.22em] text-gray-500 sm:text-sm sm:tracking-[0.24em]">
-                    Page 2 - Thư cá nhân
-                </p>
+        <BookLayout chapter="Lá thư">
+            <article className="card-paper px-5 py-7 sm:px-8 sm:py-10">
+                <header className="mb-8 border-b border-[var(--border-soft)] pb-6 sm:mb-10 sm:pb-8">
+                    <p className="mb-2 text-sm text-[var(--ink-faint)]">Gửi</p>
+                    <h1 className="display-title text-3xl sm:text-4xl">
+                        {user?.display_name || user?.name || "bạn"}
+                    </h1>
+                    <p className="mt-3 text-sm text-[var(--ink-faint)]">
+                        Một lá thư nhỏ, viết riêng cho bạn.
+                    </p>
+                </header>
 
-                <div className="relative overflow-hidden rounded-lg border border-white/10 bg-[#151515] px-4 py-6 text-left shadow-2xl shadow-black/40 sm:px-6 sm:py-8 md:px-12 md:py-12">
-                    <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent" />
-
-                    <div className="mb-6 flex flex-col gap-2 border-b border-white/10 pb-5 sm:mb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
-                        <div>
-                            <p className="text-sm text-gray-500">Gửi</p>
-                            <h1 className="mt-1 text-2xl font-light text-white sm:text-3xl md:text-4xl">
-                                {user?.display_name || user?.name || "bạn"}
-                            </h1>
-                        </div>
-                        <p className="text-sm text-gray-500">Một lá thư nhỏ, viết riêng cho bạn.</p>
+                {errorMessage ? (
+                    <p className="text-lg leading-8 text-[var(--ink)]">{errorMessage}</p>
+                ) : (
+                    <div className="min-h-64 space-y-5 text-[1.05rem] leading-[1.85] text-[var(--ink)] sm:min-h-72">
+                        {paragraphs.map((paragraph, index) => (
+                            <p key={index}>{paragraph}</p>
+                        ))}
+                        {!isTypingDone && <span className="typing-cursor" />}
                     </div>
+                )}
 
-                    {errorMessage ? (
-                        <p className="text-lg leading-8 text-gray-200">
-                            {errorMessage}
-                        </p>
-                    ) : (
-                        <div className="min-h-64 space-y-4 text-base leading-8 text-gray-200 sm:min-h-72 sm:space-y-5 md:text-xl md:leading-9">
-                            {paragraphs.map((paragraph, index) => (
-                                <p key={index}>{paragraph}</p>
-                            ))}
-                            {!isTypingDone && (
-                                <span className="inline-flex h-6 w-0.5 translate-y-1 animate-pulse bg-white" />
-                            )}
-                        </div>
-                    )}
+                <footer className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <button
+                        onClick={() => navigate("/intro")}
+                        className="btn btn-secondary"
+                    >
+                        Quay lại
+                    </button>
 
-                    <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
-                        <button
-                            onClick={() => navigate("/intro")}
-                            className="min-h-12 rounded-full border border-white/20 px-5 py-3 text-sm text-gray-300 transition hover:border-white/50 hover:text-white sm:min-h-0"
-                        >
-                            Quay lại
-                        </button>
-
-                        <button
-                            onClick={() => navigate("/farewell")}
-                            className={`min-h-12 rounded-full px-6 py-3 text-sm font-medium transition sm:min-h-0 ${
-                                isTypingDone
-                                    ? "bg-white text-black hover:bg-gray-200"
-                                    : "border border-white/20 text-gray-400 hover:border-white/40 hover:text-white"
-                            }`}
-                        >
-                            Đọc lời chúc chung
-                        </button>
-                    </div>
-                </div>
-            </section>
-        </main>
+                    <button
+                        onClick={() => navigate("/farewell")}
+                        disabled={!isTypingDone && !errorMessage}
+                        className={`btn ${isTypingDone || errorMessage ? "btn-primary" : "btn-secondary"}`}
+                    >
+                        Đọc lời chúc chung
+                    </button>
+                </footer>
+            </article>
+        </BookLayout>
     );
 }
 

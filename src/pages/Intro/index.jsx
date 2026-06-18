@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../utils/auth";
 import { useMusic } from "../../context/MusicContext";
+import BookLayout from "../../components/BookLayout";
 
 function IntroPage() {
     const navigate = useNavigate();
@@ -15,30 +16,26 @@ function IntroPage() {
     }, []);
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center bg-[#0f0f0f] px-5 pb-36 pt-10 text-white sm:px-6 sm:pb-40">
-            <p className="mb-4 text-center text-xs uppercase tracking-[0.24em] text-gray-400 sm:text-sm sm:tracking-widest">
-                Một điều nhỏ trước khi chia tay
-            </p>
-
-            <h1 className="mb-6 max-w-3xl text-center text-4xl font-light leading-snug text-white md:text-5xl">
+        <BookLayout chapter="Mở đầu" centered>
+            <h1 className="display-title mb-6 max-w-xl">
                 Cảm ơn bạn đã ở đây,{" "}
-                <span className="text-white font-normal italic">
+                <em className="not-italic text-[var(--accent)]">
                     {user?.display_name || "bạn ơi"}
-                </span>
+                </em>
                 .
             </h1>
 
-            <p className="text-gray-400 text-center max-w-md mb-12 leading-relaxed">
-                Có một lá thư nhỏ mình muốn gửi đến bạn. Bật âm lượng lên nhé 🎵
+            <p className="lead mb-10 max-w-sm">
+                Có một lá thư nhỏ mình muốn gửi đến bạn. Bật âm lượng lên nhé.
             </p>
 
             <button
                 onClick={() => navigate("/letter")}
-                className="min-h-12 w-full max-w-xs rounded-full border border-white/30 px-8 py-3 text-sm tracking-wide text-white transition-all duration-300 hover:bg-white hover:text-black sm:w-auto"
+                className="btn btn-primary"
             >
                 Mở thư của mình
             </button>
-        </div>
+        </BookLayout>
     );
 }
 

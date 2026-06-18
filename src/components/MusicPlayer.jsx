@@ -1,155 +1,86 @@
-import {
-    FaPlay,
-    FaPause,
-    FaChevronDown,
-    FaChevronUp,
-} from "react-icons/fa";
-
-import {
-    MdSkipNext,
-    MdSkipPrevious,
-} from "react-icons/md";
-
-import { IoMusicalNotes } from "react-icons/io5";
-
+import { FaPlay, FaPause } from "react-icons/fa";
+import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import { useState } from "react";
 import { useMusic } from "../context/MusicContext";
 
 function MusicPlayer() {
-    const {
-        isPlaying,
-        play,
-        pause,
-        nextTrack,
-        prevTrack,
-        currentTrack,
-    } = useMusic();
-
+    const { isPlaying, play, pause, nextTrack, prevTrack, currentTrack } = useMusic();
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
         <div
-            className={`
-                fixed
-                bottom-3
-                left-3
-                right-3
-                z-50
-                sm:bottom-6
-                sm:left-auto
-                sm:right-6
-                sm:w-72
-
-                bg-white/10
-                backdrop-blur-lg
-
-                border
-                border-white/20
-
-                rounded-2xl
-                shadow-xl
-
-                text-white
-
-                overflow-hidden
-                transition-all
-                duration-300
-                ease-in-out
-            `}
+            className={`fixed bottom-4 right-4 z-50 w-[calc(100%-2rem)] max-w-xs border border-[var(--border-soft)] bg-[var(--bg-raised)] text-[var(--ink-muted)] transition-all duration-200 sm:bottom-6 sm:right-6 ${
+                isExpanded ? "rounded-sm" : "rounded-sm"
+            }`}
         >
-            {/* Header — luôn hiển thị */}
             <div
-                className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-4 cursor-pointer select-none"
+                className="flex cursor-pointer select-none items-center justify-between gap-3 px-4 py-3"
                 onClick={() => setIsExpanded((prev) => !prev)}
             >
-                <div className="flex items-center gap-2">
-                    <IoMusicalNotes className="shrink-0" />
-                    <span className="text-xs text-gray-300 sm:text-sm truncate max-w-40 sm:max-w-45">
-                        {isExpanded ? "Soundtrack" : currentTrack.title}
-                    </span>
+                <div className="min-w-0">
+                    <p className="truncate text-sm text-[var(--ink)]">
+                        {currentTrack.title}
+                    </p>
+                    {!isExpanded && (
+                        <p className="text-xs text-[var(--ink-faint)]">Nhạc nền</p>
+                    )}
                 </div>
 
-                <div className="flex items-center gap-3">
-                    {/* Nút play/pause nhỏ khi thu gọn */}
+                <div className="flex shrink-0 items-center gap-2">
                     {!isExpanded && (
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 isPlaying ? pause() : play();
                             }}
-                            className="
-                                w-7 h-7
-                                rounded-full
-                                bg-white
-                                text-black
-                                flex items-center justify-center
-                                hover:scale-105
-                                transition
-                            "
+                            className="flex h-8 w-8 items-center justify-center border border-[var(--border)] text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                            aria-label={isPlaying ? "Tạm dừng" : "Phát"}
                         >
                             {isPlaying ? <FaPause size={10} /> : <FaPlay size={10} />}
                         </button>
                     )}
-
-                    {/* Nút toggle mở rộng / thu nhỏ */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             setIsExpanded((prev) => !prev);
                         }}
-                        className="text-gray-400 hover:text-white transition"
-                        aria-label={isExpanded ? "Thu nhỏ" : "Phóng to"}
+                        className="px-1 text-xs text-[var(--ink-faint)] transition hover:text-[var(--ink)]"
+                        aria-label={isExpanded ? "Thu gọn" : "Mở rộng"}
                     >
-                        {isExpanded ? <FaChevronDown size={12} /> : <FaChevronUp size={12} />}
+                        {isExpanded ? "—" : "+"}
                     </button>
                 </div>
             </div>
 
-            {/* Nội dung mở rộng */}
             <div
-                className={`
-                    transition-all
-                    duration-300
-                    ease-in-out
-                    ${isExpanded ? "max-h-40 opacity-100" : "max-h-0 opacity-0 pointer-events-none"}
-                `}
+                className={`overflow-hidden transition-all duration-200 ${
+                    isExpanded ? "max-h-28 opacity-100" : "max-h-0 opacity-0 pointer-events-none"
+                }`}
             >
-                <div className="px-4 pb-4 sm:px-5 sm:pb-4">
-                    <h3 className="truncate text-sm font-medium sm:text-base mb-3">
-                        {currentTrack.title}
-                    </h3>
+                <div className="flex items-center justify-center gap-6 border-t border-[var(--border-soft)] px-4 py-4">
+                    <button
+                        onClick={prevTrack}
+                        className="text-[var(--ink-faint)] transition hover:text-[var(--ink)]"
+                        aria-label="Bài trước"
+                    >
+                        <MdSkipPrevious size={22} />
+                    </button>
 
-                    <div className="flex items-center justify-center gap-5 sm:gap-4">
-                        <button
-                            onClick={prevTrack}
-                            className="hover:scale-110 transition"
-                        >
-                            <MdSkipPrevious size={26} />
-                        </button>
+                    <button
+                        onClick={isPlaying ? pause : play}
+                        className="flex h-10 w-10 items-center justify-center border border-[var(--accent)] bg-[var(--accent)] text-[#1a1510] transition hover:bg-[#d4b57a]"
+                        aria-label={isPlaying ? "Tạm dừng" : "Phát"}
+                    >
+                        {isPlaying ? <FaPause size={12} /> : <FaPlay size={12} />}
+                    </button>
 
-                        <button
-                            onClick={isPlaying ? pause : play}
-                            className="
-                                w-11 h-11
-                                sm:w-12 sm:h-12
-                                rounded-full
-                                bg-white
-                                text-black
-                                flex items-center justify-center
-                                hover:scale-105
-                                transition
-                            "
-                        >
-                            {isPlaying ? <FaPause /> : <FaPlay />}
-                        </button>
-
-                        <button
-                            onClick={nextTrack}
-                            className="hover:scale-110 transition"
-                        >
-                            <MdSkipNext size={26} />
-                        </button>
-                    </div>
+                    <button
+                        onClick={nextTrack}
+                        className="text-[var(--ink-faint)] transition hover:text-[var(--ink)]"
+                        aria-label="Bài sau"
+                    >
+                        <MdSkipNext size={22} />
+                    </button>
                 </div>
             </div>
         </div>

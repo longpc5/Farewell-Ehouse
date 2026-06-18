@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import BookLayout from "../../components/BookLayout";
 
 const wishes = [
     {
@@ -21,79 +22,55 @@ const wishes = [
 function FarewellPage() {
     const navigate = useNavigate();
 
+    const navButtons = (
+        <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+                onClick={() => navigate("/letter")}
+                className="btn btn-secondary"
+            >
+                Quay lại thư riêng
+            </button>
+            <button
+                onClick={() => navigate("/guestbook")}
+                className="btn btn-primary"
+            >
+                Viết lại cho mình
+            </button>
+        </div>
+    );
+
     return (
-        <main className="min-h-screen bg-[#0f0f0f] px-4 pb-36 pt-6 text-white sm:px-5 sm:pt-10 md:px-10 md:pb-40">
-            <section className="mx-auto flex min-h-[calc(100vh-10rem)] w-full max-w-6xl flex-col justify-center sm:min-h-[calc(100vh-12rem)]">
-                <p className="mb-4 text-left text-xs uppercase tracking-[0.22em] text-gray-500 sm:text-sm sm:tracking-[0.24em]">
-                    Page 3 - Lời chúc chung
-                </p>
+        <BookLayout chapter="Lời chúc" wide>
+            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+                <div>
+                    <h1 className="display-title display-title--lg mb-6">
+                        Gửi Ehouse, và tất cả những người mình đã gặp ở đây.
+                    </h1>
 
-                <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-                    <div className="text-left">
-                        <h1 className="mb-5 text-[2.45rem] font-light leading-[1.08] text-white sm:text-5xl md:text-6xl">
-                            Gửi Ehouse, và tất cả những người mình đã gặp ở đây.
-                        </h1>
+                    <p className="lead max-w-lg">
+                        Có những nơi mình đi qua rồi mới biết là nó đã âm thầm dạy mình rất
+                        nhiều. Ehouse là một nơi như vậy: có lớp học, có deadline, có những
+                        buổi hơi mệt, nhưng cũng có rất nhiều khoảnh khắc tử tế.
+                    </p>
 
-                        <p className="max-w-xl text-base leading-7 text-gray-400 md:text-lg md:leading-8">
-                            Có những nơi mình đi qua rồi mới biết là nó đã âm thầm dạy mình rất
-                            nhiều. Ehouse là một nơi như vậy: có lớp học, có deadline, có những
-                            buổi hơi mệt, nhưng cũng có rất nhiều khoảnh khắc tử tế.
-                        </p>
-
-                        <div className="mt-8 hidden flex-col gap-3 lg:flex xl:flex-row">
-                            <button
-                                onClick={() => navigate("/letter")}
-                                className="min-h-12 rounded-full border border-white/20 px-5 py-3 text-sm text-gray-300 transition hover:border-white/50 hover:text-white sm:min-h-0"
-                            >
-                                Quay lại thư riêng
-                            </button>
-
-                            <button
-                                onClick={() => navigate("/guestbook")}
-                                className="min-h-12 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-gray-200 sm:min-h-0"
-                            >
-                                Viết lại cho mình
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="space-y-4">
-                        {wishes.map((wish, index) => (
-                            <article
-                                key={wish.title}
-                                className="rounded-lg border border-white/10 bg-white/4 p-5 text-left shadow-xl shadow-black/20 sm:p-6"
-                            >
-                                <p className="mb-4 text-sm text-gray-500">
-                                    0{index + 1}
-                                </p>
-                                <h2 className="mb-3 text-xl font-light leading-snug text-white sm:text-2xl">
-                                    {wish.title}
-                                </h2>
-                                <p className="text-base leading-7 text-gray-400 sm:leading-8">
-                                    {wish.content}
-                                </p>
-                            </article>
-                        ))}
-
-                        <div className="flex flex-col gap-3 pt-3 sm:flex-row lg:hidden">
-                            <button
-                                onClick={() => navigate("/letter")}
-                                className="min-h-12 rounded-full border border-white/20 px-5 py-3 text-sm text-gray-300 transition hover:border-white/50 hover:text-white"
-                            >
-                                Quay lại thư riêng
-                            </button>
-
-                            <button
-                                onClick={() => navigate("/guestbook")}
-                                className="min-h-12 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:bg-gray-200"
-                            >
-                                Viết lại cho mình
-                            </button>
-                        </div>
-                    </div>
+                    <div className="mt-8 hidden lg:block">{navButtons}</div>
                 </div>
-            </section>
-        </main>
+
+                <div className="space-y-5">
+                    {wishes.map((wish, index) => (
+                        <article key={wish.title} className="card px-5 py-5 sm:px-6 sm:py-6">
+                            <p className="mb-3 font-display text-sm text-[var(--accent)]">
+                                {String(index + 1).padStart(2, "0")}
+                            </p>
+                            <h2 className="mb-3 text-2xl leading-snug">{wish.title}</h2>
+                            <p className="leading-7">{wish.content}</p>
+                        </article>
+                    ))}
+
+                    <div className="pt-2 lg:hidden">{navButtons}</div>
+                </div>
+            </div>
+        </BookLayout>
     );
 }
 
