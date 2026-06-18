@@ -59,8 +59,8 @@ function GuestbookPage() {
                     </p>
 
                     <div className="card mt-8 px-4 py-4">
-                        <p className="text-sm text-[var(--ink-faint)]">Người gửi</p>
-                        <p className="mt-1 font-display text-xl text-[var(--ink)]">
+                        <p className="text-sm text-(--ink-faint)">Người gửi</p>
+                        <p className="mt-1 font-display text-xl text-(--ink)">
                             {user?.display_name || user?.name || "Bạn"}
                         </p>
                     </div>
@@ -84,8 +84,8 @@ function GuestbookPage() {
                         <p
                             className={`text-sm ${
                                 remainingCharacters < 80
-                                    ? "text-[var(--accent)]"
-                                    : "text-[var(--ink-faint)]"
+                                    ? "text-(--accent)"
+                                    : "text-(--ink-faint)"
                             }`}
                         >
                             Còn {remainingCharacters} ký tự
