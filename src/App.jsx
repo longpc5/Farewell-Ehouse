@@ -8,6 +8,7 @@ import EndingPage from './pages/End';
 import ProtectedRoute from './components/ProtectedRoute';
 import MusicPlayer from './components/MusicPlayer';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 function App() {
   const location = useLocation();
@@ -35,6 +36,7 @@ function App() {
       </Routes>
       {showPlayer && <MusicPlayer />}
       <Analytics />
+      <SpeedInsights />
     </>
   )
 }
