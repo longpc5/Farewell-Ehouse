@@ -167,8 +167,8 @@ function EndingPage() {
                     (a.user.id === hoveredId || b.user.id === hoveredId);
 
                 ctx.strokeStyle = isConnectedToHovered
-                    ? 'rgba(201,169,110,0.7)'
-                    : 'rgba(154,146,134,0.22)';
+                    ? 'rgba(122,46,58,0.75)'
+                    : 'rgba(245,245,245,0.14)';
 
                 ctx.lineWidth = isConnectedToHovered ? 3.2 : 2;
 
@@ -221,10 +221,10 @@ function EndingPage() {
                 grd.addColorStop(
                     0,
                     isHovered
-                        ? `rgba(232,226,214,${alpha * (0.8 + star.hoverIntensity * 0.4)})`
+                        ? `rgba(245,245,245,${alpha * (0.8 + star.hoverIntensity * 0.4)})`
                         : star.isCurrentUser
-                            ? `rgba(201,169,110,${alpha * 0.75})`
-                            : `rgba(232,226,214,${alpha * 0.5})`
+                            ? `rgba(122,46,58,${alpha * 0.85})`
+                            : `rgba(245,245,245,${alpha * 0.45})`
                 );
                 grd.addColorStop(1, "rgba(255,255,255,0)");
                 ctx.beginPath();
@@ -236,17 +236,17 @@ function EndingPage() {
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, r, 0, Math.PI * 2);
                 ctx.fillStyle = isHovered
-                    ? `rgba(232,226,214,${alpha * (0.9 + star.hoverIntensity * 0.2)})`
+                    ? `rgba(245,245,245,${alpha * (0.9 + star.hoverIntensity * 0.2)})`
                     : star.isCurrentUser
-                        ? `rgba(212,185,122,${alpha})`
-                        : `rgba(232,226,214,${alpha * 0.85})`;
+                        ? `rgba(148,56,71,${alpha})`
+                        : `rgba(245,245,245,${alpha * 0.8})`;
                 ctx.fill();
 
                 // Tên user — hiện mờ dưới ngôi sao
                 ctx.font = '13px "Cormorant Garamond", Georgia, serif';
                 ctx.fillStyle = isHovered
-                    ? `rgba(232,226,214,${Math.min(alpha, 1)})`
-                    : `rgba(154,146,134,${alpha * 0.7})`;
+                    ? `rgba(245,245,245,${Math.min(alpha, 1)})`
+                    : `rgba(184,184,184,${alpha * 0.7})`;
                 ctx.textAlign = "center";
                 ctx.fillText(
                     star.user.display_name || "—",

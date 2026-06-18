@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
 import { clearCurrentUser } from "../../utils/auth";
+import { FaBookOpen, FaLock, FaUser } from "react-icons/fa";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -70,34 +71,47 @@ function LoginPage() {
                     }}
                     className="card-paper p-6 sm:p-8"
                 >
-                    <h2 className="mb-1 text-2xl">Mở trang của bạn</h2>
-                    <p className="mb-8 text-sm text-[var(--ink-faint)]">
-                        Đăng nhập bằng tài khoản đã được gửi riêng.
-                    </p>
+                    <div className="mb-8 flex items-center gap-3">
+                        <div className="icon-box sm:h-12 sm:w-12">
+                            <FaBookOpen />
+                        </div>
+                        <div>
+                            <h2 className="text-xl sm:text-2xl">Mở trang của bạn</h2>
+                            <p className="mt-1 text-sm text-[var(--ink-faint)]">
+                                Đăng nhập bằng tài khoản đã được gửi riêng.
+                            </p>
+                        </div>
+                    </div>
 
                     <label className="field-label" htmlFor="username">
                         Username
                     </label>
-                    <input
-                        id="username"
-                        type="text"
-                        placeholder="Tên đăng nhập"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="field-input mb-5"
-                    />
+                    <div className="field-input-group mb-5">
+                        <FaUser />
+                        <input
+                            id="username"
+                            type="text"
+                            placeholder="Tên đăng nhập"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="field-input"
+                        />
+                    </div>
 
                     <label className="field-label" htmlFor="password">
                         Password
                     </label>
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="Mật khẩu"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="field-input"
-                    />
+                    <div className="field-input-group">
+                        <FaLock />
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Mật khẩu"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="field-input"
+                        />
+                    </div>
 
                     {errorMessage && (
                         <p className="text-error mt-4">{errorMessage}</p>
