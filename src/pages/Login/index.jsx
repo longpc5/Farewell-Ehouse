@@ -3,6 +3,7 @@ import { supabase } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
 import { clearCurrentUser } from "../../utils/auth";
 import { FaBookOpen, FaLock, FaUser, FaEye, FaEyeSlash, FaQuestionCircle } from "react-icons/fa";
+import { LOGIN_CONTENT } from "../../content/loginContent";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ function LoginPage() {
 
     const handleLogin = async () => {
         if (!username.trim() || !password.trim()) {
-            setErrorMessage("Nhập đủ username và password trước nha.");
+            setErrorMessage(LOGIN_CONTENT.ERRORS.EMPTY_FIELDS);
             return;
         }
 
@@ -46,13 +47,13 @@ function LoginPage() {
             .single();
 
         if (error || !data) {
-            setErrorMessage("Mình chưa tìm thấy tên này trong danh sách.");
+            setErrorMessage(LOGIN_CONTENT.ERRORS.USER_NOT_FOUND);
             setIsLoggingIn(false);
             return;
         }
 
         if (data.password !== password) {
-            setErrorMessage("Password chưa đúng rồi. Thử lại một lần nữa nhé.");
+            setErrorMessage(LOGIN_CONTENT.ERRORS.WRONG_PASSWORD);
             setIsLoggingIn(false);
             return;
         }
@@ -66,15 +67,15 @@ function LoginPage() {
             <section className="page-inner page-inner--wide mx-auto grid min-h-[calc(100svh-8rem)] items-center gap-12 lg:grid-cols-[1.1fr_0.85fr]">
                 <div>
                     <p className="mb-6 font-display text-(--ink-faint)">
-                        Ehouse · sổ chia tay
+                        {LOGIN_CONTENT.HERO.EYEBROW}
                     </p>
 
                     <h1 className="display-title display-title--lg mb-6 max-w-2xl">
-                        Một cuốn sổ nhỏ trước khi tạm biệt
+                        {LOGIN_CONTENT.HERO.TITLE}
                     </h1>
 
                     <p className="lead max-w-lg">
-                        Không có gì quá đặc biệt đâu, chỉ là một góc nhỏ để Long gửi lại những điều chưa kịp nói trong suốt thời gian ở Ehouse.
+                        {LOGIN_CONTENT.HERO.DESCRIPTION}
                     </p>
                 </div>
 
@@ -90,22 +91,22 @@ function LoginPage() {
                             <FaBookOpen />
                         </div>
                         <div>
-                            <h2 className="text-xl sm:text-2xl">Mở trang của bạn</h2>
+                            <h2 className="text-xl sm:text-2xl">{LOGIN_CONTENT.FORM.TITLE}</h2>
                             <p className="mt-1 text-sm text-(--ink-faint)">
-                                Đăng nhập bằng tài khoản đã được gửi riêng.
+                                {LOGIN_CONTENT.FORM.DESCRIPTION}
                             </p>
                         </div>
                     </div>
 
                     <label className="field-label" htmlFor="username">
-                        Username
+                        {LOGIN_CONTENT.FORM.USERNAME_LABEL}
                     </label>
                     <div className="field-input-group mb-5">
                         <FaUser />
                         <input
                             id="username"
                             type="text"
-                            placeholder="Tên đăng nhập"
+                            placeholder={LOGIN_CONTENT.FORM.USERNAME_PLACEHOLDER}
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="field-input"
@@ -113,14 +114,14 @@ function LoginPage() {
                     </div>
 
                     <label className="field-label" htmlFor="password">
-                        Password
+                        {LOGIN_CONTENT.FORM.PASSWORD_LABEL}
                     </label>
                     <div className="field-input-group">
                         <FaLock />
                         <input
                             id="password"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Mật khẩu"
+                            placeholder={LOGIN_CONTENT.FORM.PASSWORD_PLACEHOLDER}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="field-input"
@@ -129,7 +130,7 @@ function LoginPage() {
                             type="button"
                             onClick={() => setShowPassword((prev) => !prev)}
                             className="shrink-0 text-(--ink-faint) transition hover:text-(--ink)"
-                            aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                            aria-label={showPassword ? LOGIN_CONTENT.FORM.HIDE_PASSWORD : LOGIN_CONTENT.FORM.SHOW_PASSWORD}
                         >
                             {showPassword ? <FaEyeSlash size={15} /> : <FaEye size={15} />}
                         </button>
@@ -152,7 +153,7 @@ function LoginPage() {
                         >
                             <FaQuestionCircle size={13} />
                             {/* <span>{showHint ? "Ẩn hướng dẫn" : "Chưa biết đăng nhập?"}</span> */}
-                            <span>Chưa biết đăng nhập?</span>
+                            <span>{LOGIN_CONTENT.HINT.SHOW_BUTTON}</span>
                         </button>
 
                         {/* Thay {showHint && ...} bằng kiểm tra class */}
@@ -169,12 +170,13 @@ function LoginPage() {
                             <div className="absolute left-4 top-full -mt-px border-4 border-transparent border-t-[var(--bg-raised)]" />
 
                             <p className="mb-2.5">
-                                <span className="text-(--ink)">Username</span> — tên viết liền không dấu, chữ thường.{" "}
-                                Ví dụ: Nguyễn Văn A →{" "}
-                                <span className="font-mono text-(--ink)">nguyenvana</span>
+                                <span className="text-(--ink)">{LOGIN_CONTENT.FORM.USERNAME_LABEL}</span>
+                                {LOGIN_CONTENT.HINT.USERNAME}
+                                <span className="font-mono text-(--ink)">{LOGIN_CONTENT.HINT.USERNAME_EG}</span>
                             </p>
                             <p>
-                                <span className="text-(--ink)">Password</span> — tin nhắn cuối cùng bạn gửi cho mình trên Zalo (copy y chang, kể cả emoji).
+                                <span className="text-(--ink)">{LOGIN_CONTENT.FORM.PASSWORD_LABEL}</span>
+                                {LOGIN_CONTENT.HINT.PASSWORD}
                             </p>
                         </div>
                     </div>
@@ -184,7 +186,7 @@ function LoginPage() {
                         disabled={isLoggingIn}
                         className="btn btn-primary mt-7 w-full"
                     >
-                        {isLoggingIn ? "Đang mở..." : "Mở cuốn sổ"}
+                        {isLoggingIn ? LOGIN_CONTENT.FORM.LOADING_BUTTON : LOGIN_CONTENT.FORM.SUBMIT_BUTTON}
                     </button>
                 </form>
             </section>
