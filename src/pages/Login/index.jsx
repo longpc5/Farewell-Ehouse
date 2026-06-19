@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../services/supabase";
 import { useNavigate } from "react-router-dom";
 import { clearCurrentUser } from "../../utils/auth";
-import { FaBookOpen, FaLock, FaUser } from "react-icons/fa";
+import { FaBookOpen, FaLock, FaUser, FaEye, FaEyeSlash, FaQuestionCircle } from "react-icons/fa";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -10,10 +10,25 @@ function LoginPage() {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showHint, setShowHint] = useState(false);
+    const hintBtnRef = useRef(null);
 
     useEffect(() => {
         clearCurrentUser();
     }, []);
+
+    // Đóng tooltip khi click ra ngoài
+    useEffect(() => {
+        if (!showHint) return;
+        const handleClick = (e) => {
+            if (hintBtnRef.current && !hintBtnRef.current.closest("[data-hint-root]").contains(e.target)) {
+                setShowHint(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClick);
+        return () => document.removeEventListener("mousedown", handleClick);
+    }, [showHint]);
 
     const handleLogin = async () => {
         if (!username.trim() || !password.trim()) {
@@ -55,12 +70,11 @@ function LoginPage() {
                     </p>
 
                     <h1 className="display-title display-title--lg mb-6 max-w-2xl">
-                        Một cuốn sổ nhỏ trước ngày tạm biệt.
+                        Một cuốn sổ nhỏ trước khi tạm biệt
                     </h1>
 
                     <p className="lead max-w-lg">
-                        Mỗi người sẽ mở một trang riêng — có thư, có lời chúc, có vài dòng
-                        gửi lại cho mình, và một chút nhạc nền cho đỡ buồn.
+                        Không có gì quá đặc biệt đâu, chỉ là một góc nhỏ để Long gửi lại những điều chưa kịp nói trong suốt thời gian ở Ehouse.
                     </p>
                 </div>
 
@@ -105,22 +119,70 @@ function LoginPage() {
                         <FaLock />
                         <input
                             id="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="Mật khẩu"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="field-input"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="shrink-0 text-(--ink-faint) transition hover:text-(--ink)"
+                            aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                        >
+                            {showPassword ? <FaEyeSlash size={15} /> : <FaEye size={15} />}
+                        </button>
                     </div>
 
                     {errorMessage && (
                         <p className="text-error mt-4">{errorMessage}</p>
                     )}
 
+                    {/* Hint tooltip */}
+                    <div className="relative mt-5"
+                    onMouseEnter={() => setShowHint(true)}
+                    onMouseLeave={() => setShowHint(false)} 
+                    data-hint-root>
+                        <button
+                            ref={hintBtnRef}
+                            type="button"
+                            onClick={() => setShowHint((prev) => !prev)}
+                            className="flex items-center gap-1.5 text-sm text-(--ink-faint) transition hover:text-(--ink)"
+                        >
+                            <FaQuestionCircle size={13} />
+                            {/* <span>{showHint ? "Ẩn hướng dẫn" : "Chưa biết đăng nhập?"}</span> */}
+                            <span>Chưa biết đăng nhập?</span>
+                        </button>
+
+                        {/* Thay {showHint && ...} bằng kiểm tra class */}
+                        <div
+                            className={`absolute bottom-full left-0 z-50 mb-2 w-72 border border-(--border) bg-(--bg-raised) p-4 text-sm leading-6 text-(--ink-muted) shadow-xl
+            transition-all duration-300 ease-out
+            ${showHint
+                                    ? "opacity-100 translate-y-0 visible"
+                                    : "opacity-0 translate-y-2 invisible pointer-events-none"
+                                }`}
+                        >
+                            {/* Arrow */}
+                            <div className="absolute left-4 top-full border-4 border-transparent border-t-[var(--border)]" />
+                            <div className="absolute left-4 top-full -mt-px border-4 border-transparent border-t-[var(--bg-raised)]" />
+
+                            <p className="mb-2.5">
+                                <span className="text-(--ink)">Username</span> — tên viết liền không dấu, chữ thường.{" "}
+                                Ví dụ: Nguyễn Văn A →{" "}
+                                <span className="font-mono text-(--ink)">nguyenvana</span>
+                            </p>
+                            <p>
+                                <span className="text-(--ink)">Password</span> — tin nhắn cuối cùng bạn gửi cho mình trên Zalo (copy y chang, kể cả emoji).
+                            </p>
+                        </div>
+                    </div>
+
                     <button
                         type="submit"
                         disabled={isLoggingIn}
-                        className="btn btn-primary mt-8 w-full"
+                        className="btn btn-primary mt-7 w-full"
                     >
                         {isLoggingIn ? "Đang mở..." : "Mở cuốn sổ"}
                     </button>
