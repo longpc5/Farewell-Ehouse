@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../utils/auth";
 import { useMusic } from "../../context/MusicContext";
 import BookLayout from "../../components/BookLayout";
+import { INTRO_CONTENT } from "../../content/introContent";
 
 function IntroPage() {
     const navigate = useNavigate();
@@ -16,9 +17,11 @@ function IntroPage() {
     }, []);
 
     return (
-        <BookLayout chapter="Mở đầu" centered>
+        <BookLayout chapter={INTRO_CONTENT.HERO.EYEBROW} centered>
             <h1 className="display-title mb-6 max-w-xl">
-                Cảm ơn bạn đã ở đây,{" "}
+                {INTRO_CONTENT.HERO.TITLE_PREFIX}{" "}
+                {user?.salutation || "bạn"}{" "}
+                {INTRO_CONTENT.HERO.TITLE_SUFFIX}{" "}
                 <em className="not-italic text-(--accent)">
                     {user?.display_name || "bạn ơi"}
                 </em>
@@ -26,14 +29,16 @@ function IntroPage() {
             </h1>
 
             <p className="lead mb-10 max-w-sm">
-                Có một lá thư nhỏ mình muốn gửi đến bạn. Bật âm lượng lên nhé.
+                {INTRO_CONTENT.HERO.DESCRIPTION_PREFIX}{" "}
+                {user?.salutation || "bạn"}
+                {INTRO_CONTENT.HERO.DESCRIPTION_SUFFIX}
             </p>
 
             <button
                 onClick={() => navigate("/letter")}
                 className="btn btn-primary"
             >
-                Mở thư của mình
+                {INTRO_CONTENT.ACTIONS.OPEN_LETTER_BUTTON}
             </button>
         </BookLayout>
     );
