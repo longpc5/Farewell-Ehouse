@@ -48,17 +48,17 @@ function GuestbookPage() {
     return (
         <BookLayout chapter="Sổ lưu bút">
             <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-                <div>
+                <div className="motion-reveal">
                     <h1 className="display-title mb-5">
                         Một lời nhắn chỉ mình tôi đọc.
                     </h1>
 
-                    <p className="lead">
+                    <p className="lead motion-reveal motion-delay-1">
                         Nếu có điều gì bạn muốn gửi riêng, cứ viết ở đây. Nó sẽ không hiện
                         lên cho người khác xem, chỉ nằm lại trong sổ lưu bút của mình thôi.
                     </p>
 
-                    <div className="card mt-8 px-4 py-4">
+                    <div className="card motion-reveal motion-delay-2 mt-8 px-4 py-4">
                         <p className="text-sm text-(--ink-faint)">Người gửi</p>
                         <p className="mt-1 font-display text-xl text-(--ink)">
                             {user?.display_name || user?.name || "Bạn"}
@@ -66,7 +66,7 @@ function GuestbookPage() {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="card-paper p-5 sm:p-7">
+                <form onSubmit={handleSubmit} className="card-paper motion-reveal-soft motion-delay-1 p-5 sm:p-7">
                     <label htmlFor="guestbook-message" className="field-label">
                         Lời nhắn của bạn
                     </label>

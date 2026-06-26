@@ -65,7 +65,7 @@ function LoginPage() {
     return (
         <main className="page-shell">
             <section className="page-inner page-inner--wide mx-auto grid min-h-[calc(100svh-8rem)] items-center gap-12 lg:grid-cols-[1.1fr_0.85fr]">
-                <div>
+                <div className="motion-reveal">
                     <p className="mb-6 font-display text-(--ink-faint)">
                         {LOGIN_CONTENT.HERO.EYEBROW}
                     </p>
@@ -74,7 +74,7 @@ function LoginPage() {
                         {LOGIN_CONTENT.HERO.TITLE}
                     </h1>
 
-                    <p className="lead max-w-lg">
+                    <p className="lead motion-reveal motion-delay-1 max-w-lg">
                         {LOGIN_CONTENT.HERO.DESCRIPTION}
                     </p>
                 </div>
@@ -84,7 +84,7 @@ function LoginPage() {
                         event.preventDefault();
                         handleLogin();
                     }}
-                    className="card-paper p-6 sm:p-8"
+                    className="card-paper motion-reveal-soft motion-delay-2 p-6 sm:p-8"
                 >
                     <div className="mb-8 flex items-center gap-3">
                         <div className="icon-box sm:h-12 sm:w-12">

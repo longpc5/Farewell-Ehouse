@@ -3,6 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
 import { clearCurrentUser, getCurrentUser } from "../../utils/auth";
 
+const getDisplayName = (user) => user?.display_name || user?.name || "Một người ở Ehouse";
+
+const getUserImage = (user) =>
+    user?.avatar_url ||
+    user?.photo_url ||
+    user?.image_url ||
+    user?.picture_url ||
+    user?.profile_image ||
+    user?.profile_image_url ||
+    "";
+
 function EndingPage() {
     const navigate = useNavigate();
     const canvasRef = useRef(null);
@@ -13,13 +24,14 @@ function EndingPage() {
     const [hoveredUser, setHoveredUser] = useState(null);
     const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
     const currentUser = getCurrentUser();
+    const currentUserId = currentUser?.id;
 
     // Load users từ Supabase
     useEffect(() => {
         const loadUsers = async () => {
             const { data, error } = await supabase
                 .from("users")
-                .select("id, display_name");
+                .select("*");
 
             if (!error && data) {
                 setUsers(data);
@@ -48,7 +60,7 @@ function EndingPage() {
             const size = 1.5 + Math.random() * 2;
             const twinkleOffset = Math.random() * Math.PI * 2;
             const twinkleSpeed = 0.4 + Math.random() * 0.8;
-            const isCurrentUser = user.id === currentUser?.id;
+            const isCurrentUser = user.id === currentUserId;
             return {
                 user,
                 x,
@@ -68,7 +80,7 @@ function EndingPage() {
             twinkleOffset: Math.random() * Math.PI * 2,
             twinkleSpeed: 0.2 + Math.random() * 0.5,
         }));
-    }, [users]);
+    }, [users, currentUserId]);
 
     // Draw loop
     useEffect(() => {
@@ -242,14 +254,23 @@ function EndingPage() {
                         : `rgba(245,245,245,${alpha * 0.8})`;
                 ctx.fill();
 
-                // Tên user — hiện mờ dưới ngôi sao
+                if (star.isCurrentUser || isHovered) {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, r + 5, 0, Math.PI * 2);
+                    ctx.strokeStyle = star.isCurrentUser
+                        ? "rgba(122,46,58,0.8)"
+                        : "rgba(245,245,245,0.55)";
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                }
+
                 ctx.font = '13px "Cormorant Garamond", Georgia, serif';
                 ctx.fillStyle = isHovered
                     ? `rgba(245,245,245,${Math.min(alpha, 1)})`
                     : `rgba(184,184,184,${alpha * 0.7})`;
                 ctx.textAlign = "center";
                 ctx.fillText(
-                    star.user.display_name || "—",
+                    getDisplayName(star.user),
                     star.x,
                     star.y + r + 14
                 );
@@ -265,7 +286,7 @@ function EndingPage() {
             cancelAnimationFrame(animFrameRef.current);
             window.removeEventListener("resize", resize);
         };
-    }, [users]);
+    }, [users, hoveredUser?.id]);
 
     // Hover detection
     const handleMouseMove = (e) => {
@@ -285,8 +306,10 @@ function EndingPage() {
 
         if (found) {
             setHoveredUser(found.user);
-            setTooltipPos({ x: e.clientX, y: e.clientY });
-            // console.log(found.user.display_name);
+            setTooltipPos({
+                x: Math.max(12, Math.min(e.clientX + 16, window.innerWidth - 116)),
+                y: Math.max(e.clientY - 62, 12),
+            });
         } else {
             setHoveredUser(null);
         }
@@ -303,8 +326,9 @@ function EndingPage() {
     return (
         <main
             className="relative min-h-screen overflow-hidden bg-(--bg) text-(--ink)"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleLeave}
+            onPointerMove={handleMouseMove}
+            onPointerDown={handleMouseMove}
+            onPointerLeave={handleLeave}
         >
             {/* Canvas constellation */}
             <canvas
@@ -316,13 +340,26 @@ function EndingPage() {
             {/* Tooltip */}
             {hoveredUser && (
                 <div
-                    className="pointer-events-none fixed z-50 whitespace-nowrap border border-(--border) bg-(--bg-raised) px-3 py-1.5 text-sm text-(--ink)"
+                    className="pointer-events-none fixed z-50 border border-(--border) bg-(--bg-raised) p-2 shadow-2xl shadow-black/40"
                     style={{
-                        left: tooltipPos.x + 14,
-                        top: tooltipPos.y - 16,
+                        left: tooltipPos.x,
+                        top: tooltipPos.y,
                     }}
                 >
-                    {hoveredUser.display_name}
+                    {getUserImage(hoveredUser) ? (
+                        <img
+                            src={getUserImage(hoveredUser)}
+                            alt={getDisplayName(hoveredUser)}
+                            className="h-20 w-20 object-cover"
+                        />
+                    ) : (
+                        <div
+                            aria-label={getDisplayName(hoveredUser)}
+                            className="flex h-20 w-20 items-center justify-center bg-(--accent-soft) font-display text-3xl text-(--ink)"
+                        >
+                            {getDisplayName(hoveredUser).charAt(0)}
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -344,7 +381,7 @@ function EndingPage() {
                     <p className="mb-12 text-sm text-(--ink-faint)">
                         Trong đó có{" "}
                         <span className="text-(--accent)">
-                            {currentUser.display_name}
+                            {getDisplayName(currentUser)}
                         </span>
                         .
                     </p>

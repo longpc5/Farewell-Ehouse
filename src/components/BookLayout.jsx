@@ -13,7 +13,7 @@ function BookLayout({
                 }`}
             >
                 {chapter && (
-                    <p className="chapter-mark">
+                    <p className="chapter-mark motion-reveal-soft">
                         <span>{chapter}</span>
                     </p>
                 )}

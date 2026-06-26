@@ -18,7 +18,7 @@ function IntroPage() {
 
     return (
         <BookLayout chapter={INTRO_CONTENT.HERO.EYEBROW} centered>
-            <h1 className="display-title mb-6 max-w-xl">
+            <h1 className="display-title motion-reveal mb-6 max-w-xl">
                 {INTRO_CONTENT.HERO.TITLE_PREFIX}{" "}
                 {user?.salutation || "bạn"}{" "}
                 {INTRO_CONTENT.HERO.TITLE_SUFFIX}{" "}
@@ -28,7 +28,7 @@ function IntroPage() {
                 .
             </h1>
 
-            <p className="lead mb-10 max-w-sm">
+            <p className="lead motion-reveal motion-delay-1 mb-10 max-w-sm">
                 {INTRO_CONTENT.HERO.DESCRIPTION_PREFIX}{" "}
                 {user?.salutation || "bạn"}
                 {INTRO_CONTENT.HERO.DESCRIPTION_SUFFIX}
@@ -36,7 +36,7 @@ function IntroPage() {
 
             <button
                 onClick={() => navigate("/letter")}
-                className="btn btn-primary"
+                className="btn btn-primary motion-reveal motion-delay-2"
             >
                 {INTRO_CONTENT.ACTIONS.OPEN_LETTER_BUTTON}
             </button>
